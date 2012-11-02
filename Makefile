@@ -7,5 +7,5 @@ test:
 	nosetests tests
 
 init:
-	virtualenv env
-	pip install -r requirements.txt --use-mirrors
+	test -d env || virtualenv env
+	. env/bin/activate; pip install -r requirements.txt --use-mirrors
