@@ -10,13 +10,13 @@ with open('LICENSE') as f:
     license = f.read()
 
 setup(
-    name='gitlink',
+    name='gitbuglink',
     version='0.0.1',
     description='The stupid commit-bug traceability linker for the stupid content tracker',
     long_description=readme,
     author='Christopher S. Corley',
     author_email='cscorley@ua.edu',
-    url='https://github.com/cscorley/gitlink',
+    url='https://github.com/cscorley/gitbuglink',
     license=license,
     packages=find_packages(exclude=('tests', 'docs'))
 )
