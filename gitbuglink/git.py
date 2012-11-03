@@ -17,7 +17,10 @@ from collections import namedtuple
 import dulwich
 
 TraceInfo = namedtuple('traceinfo', 'commit_id author committer date message bug_ids')
-SuperRe = re.compile("(?:bug|fix|pr|br)\\s*(?:id|[#=])?\\s*([0-9]{4,6})")
+bugre = re.compile("(?:bug|fix|pr|br|bz)\\s*(?:id|[#=])?\\s*([0-9]{4,6})",
+        flags=re.IGNORECASE)
+bzurlre = re.compile("(?:http|https)://\S+/show_bug.cgi\?id=([0-9]{4,6})",
+        flags=re.IGNORECASE)
 # what about "Bug" "PR", multiple ids, and urls?
 
 def detect(commit):
@@ -27,7 +30,11 @@ def detect(commit):
     return tuple(ids)
 
 def detect_message(msg):
-    r = SuperRe.match(msg)
+    r = bugre.match(msg)
+    if r:
+        return r.group(1)
+
+    r = bzurlre.match(msg)
     if r:
         return r.group(1)
 

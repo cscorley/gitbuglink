@@ -17,6 +17,15 @@ Has URL's that do not match the regex
 
     39c4270 Fix https://issues.apache.org/bugzilla/show_bug.cgi?id=53993 Avoid NPE when the session is invalidated
 
+Has URL's for other project's Bugzilla, woo!
+
+    2caeb7b Replace $Date$ with $Id$ because of its i18n and timezone issues (http://subversion.tigris.org/issues/show_bug.cgi?id=2332)
+    
+
+Sometimes the URL comes first, so falling back on that is not always valid:
+
+    80a7aff Fix https://issues.apache.org/bugzilla/show_bug.cgi?id=52259 Regression caused by bug 46264. Prevent deadlock if no Realm is configured.
+
 Ant
 ---
 
