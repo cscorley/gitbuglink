@@ -30,15 +30,17 @@ def detect(commit):
     return tuple(ids)
 
 def detect_message(msg):
+    returning = list()
+
     r = bugre.findall(msg)
     if r:
-        return r
+        returning.extend(r)
 
     r = bzurlre.findall(msg)
     if r:
-        return r
+        returning.extend(r)
 
-    return []
+    return returning
 
 
 def get_links(project_url):
