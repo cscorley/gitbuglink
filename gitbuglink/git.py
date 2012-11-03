@@ -24,19 +24,21 @@ bzurlre = re.compile("(?:http|https)://\S+/show_bug.cgi\?id=([0-9]{4,6})",
 # what about "Bug" "PR", multiple ids, and urls?
 
 def detect(commit):
-    ids = list()
-    ids.append(detect_message(commit.message))
+    ids = set()
+    ids.update(detect_message(commit.message))
     # filter by time?
     return tuple(ids)
 
 def detect_message(msg):
-    r = bugre.match(msg)
+    r = bugre.findall(msg)
     if r:
-        return r.group(1)
+        return r
 
-    r = bzurlre.match(msg)
+    r = bzurlre.findall(msg)
     if r:
-        return r.group(1)
+        return r
+
+    return []
 
 
 def get_links(project_url):
@@ -61,8 +63,11 @@ def main(args):
     for p in args[1:]:
         if os.path.exists(p):
             for each in get_links(args[1]):
-                if each.bug_ids[0] is not None:
-                    print(each.commit_id + "," + each.bug_ids[0])
+                if len(each.bug_ids) > 1:
+                    print("Human, what do you think? ", each.commit_id + "," + str(each.bug_ids))
+                elif len(each.bug_ids) == 1:
+                    print("A wild link appears!", each.commit_id + "," + str(each.bug_ids[0]))
+
         else:
             print("Path does not exist: ", p)
 
