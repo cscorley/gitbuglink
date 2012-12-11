@@ -7,5 +7,5 @@ test:
 	nosetests tests
 
 init:
-	test -d env || virtualenv env --python=python2.7
+	test -d env || virtualenv env --python=python2
 	. env/bin/activate; pip install -r requirements.txt --use-mirrors

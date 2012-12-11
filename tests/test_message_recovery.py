@@ -7,10 +7,6 @@ import unittest
 
 class MessageTestSuite(unittest.TestCase):
 
-    def test_basic_bug(self):
-        msg = """
-        """
-
     def test_url_id(self):
         # from Tomcat commit 39c4270acadaf605a9201bb60b8a8ff118fccdf1
         msg = """Fix https://issues.apache.org/bugzilla/show_bug.cgi?id=53993
