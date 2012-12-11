@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.6
+#!/usr/bin/env python2
 #
 # [The "New BSD" license]
 # Copyright (c) 2012 The Board of Trustees of The University of Alabama
@@ -11,8 +11,8 @@ from __future__ import (print_function, with_statement)
 import re
 import sys
 import os
-import csv
 from collections import namedtuple
+from optparse import OptionParser, SUPPRESS_HELP
 
 import dulwich
 
@@ -74,17 +74,34 @@ def get_links(project_url):
 
         yield trace
 
-def main(args):
-    for p in args[1:]:
-        if os.path.exists(p):
-            for each in get_links(args[1]):
-                if len(each.bug_ids) > 1:
-                    print("Human, what do you think? ", each.commit_id + "," + str(each.bug_ids))
-                elif len(each.bug_ids) == 1:
-                    print("A wild link appears!", each.commit_id + "," + str(each.bug_ids[0]))
+def main(argv):
+    # Configure option parser
+    optparser = OptionParser(usage='%prog [options] PATH', version='0.1')
+    optparser.set_defaults(links_file='links.csv')
+    optparser.set_defaults(humans_file='humans.csv')
+    optparser.add_option('-l', '--links_file', dest='links_file',
+            help='Output file for links')
+    optparser.add_option('-m', '--humans_file', dest='humans_file',
+            help='Output file for human links')
+    (options, args) = optparser.parse_args(argv)
 
-        else:
-            print("Path does not exist: ", p)
+    print(args)
+    if len(args) > 1:
+        repo = args[1]
+    else:
+        repo = "."
+
+    if os.path.exists(repo):
+        with open(options.links_file, 'w') as l:
+            with open(options.humans_file, 'w') as h:
+                for each in get_links(repo):
+                    if len(each.bug_ids) > 1:
+                        h.write(each.commit_id + "," + ",".join(each.bug_ids) + "\n")
+                    elif len(each.bug_ids) == 1:
+                        l.write(each.commit_id + "," + each.bug_ids[0] + "\n")
+
+    else:
+        print("Path does not exist: ", repo)
 
 if __name__ == '__main__':
     main(sys.argv)
