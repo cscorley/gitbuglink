@@ -19,7 +19,7 @@ Avoid NPE when the session is invalidated
 git-svn-id: https://svn.apache.org/repos/asf/tomcat/trunk@1397868 13f79535-47bb-0310-9956-ffa450edef68
 """
 
-        bugs = list(gitbuglink.git.detect_message(msg))
+        bugs = list(gitbuglink.git.detect(msg))
         assert '53993' in bugs
         assert len(bugs) == 1
 
@@ -31,7 +31,7 @@ configured.
 
 git-svn-id: https://svn.apache.org/repos/asf/tomcat/trunk@1208046 13f79535-47bb-0310-9956-ffa450edef68
 """
-        bugs = list(gitbuglink.git.detect_message(msg))
+        bugs = list(gitbuglink.git.detect(msg))
         assert '52259' in bugs
         assert '46264' in bugs
         assert len(bugs) == 2
@@ -51,7 +51,7 @@ Still some work to do: there might be intermediate file in the import stack whic
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1373326 13f79535-47bb-0310-9956-ffa450edef68
 """
 
-        bugs = list(gitbuglink.git.detect_message(msg))
+        bugs = list(gitbuglink.git.detect(msg))
         assert '53550' in bugs
         assert len(bugs) == 1
 
@@ -62,7 +62,7 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1373326 13f79535-47b
 
     git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1367741 13f79535-47bb-0310-9956-ffa450edef68
 """
-        bugs = list(gitbuglink.git.detect_message(msg))
+        bugs = list(gitbuglink.git.detect(msg))
         assert '53622' in bugs
         assert len(bugs) == 1
 
@@ -72,7 +72,7 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1373326 13f79535-47b
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1367736 13f79535-47bb-0310-9956-ffa450edef68
 """
 
-        bugs = list(gitbuglink.git.detect_message(msg))
+        bugs = list(gitbuglink.git.detect(msg))
         assert '53622' in bugs
         assert len(bugs) == 1
 
@@ -83,11 +83,11 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1367736 13f79535-47b
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1343304 13f79535-47bb-0310-9956-ffa450edef68
 """
 
-        bugs = list(gitbuglink.git.detect_message(msg))
+        bugs = list(gitbuglink.git.detect(msg))
         assert '51792' in bugs
         assert len(bugs) == 1
 
-    def test_problem_id(self):
+    def test_comma_separated_id(self):
         # 99 problems but a git ain't one HIT ME
         # Ant commit d106278b06b7a0d136793c42c8b76cf14e3adbcb
         msg = """problems 49079, 48961
@@ -99,7 +99,7 @@ Address indexOf inefficiency in PropertyHelper default propertyexpander implemen
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@932588 13f79535-47bb-0310-9956-ffa450edef68
 """
 
-        bugs = list(gitbuglink.git.detect_message(msg))
+        bugs = list(gitbuglink.git.detect(msg))
         assert '49079' in bugs
         assert '48961' in bugs
         assert len(bugs) == 2
@@ -111,7 +111,7 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@932588 13f79535-47bb
 
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@924533 13f79535-47bb-0310-9956-ffa450edef68
 """
-        bugs = list(gitbuglink.git.detect_message(msg))
+        bugs = list(gitbuglink.git.detect(msg))
         assert '48932' in bugs
         assert len(bugs) == 1
 
@@ -122,7 +122,7 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@924533 13f79535-47bb
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@720481 13f79535-47bb-0310-9956-ffa450edef68
 """
 
-        bugs = list(gitbuglink.git.detect_message(msg))
+        bugs = list(gitbuglink.git.detect(msg))
         assert '32461' in bugs
         assert len(bugs) == 1
 
@@ -132,7 +132,7 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@720481 13f79535-47bb
 
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@631430 13f79535-47bb-0310-9956-ffa450edef68
 """
-        bugs = list(gitbuglink.git.detect_message(msg))
+        bugs = list(gitbuglink.git.detect(msg))
         assert '44493' in bugs
         assert len(bugs) == 1
 

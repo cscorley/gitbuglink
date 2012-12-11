@@ -17,30 +17,43 @@ from collections import namedtuple
 import dulwich
 
 TraceInfo = namedtuple('traceinfo', 'commit_id author committer date message bug_ids')
-bugre = re.compile("(?:bug|fix|pr|br|bz)\\s*(?:id|[#=])?\\s*([0-9]{4,6})",
+trigger_words = "bug|fix|pr|br|bz|bugzilla|issue|problem"
+bugids = re.compile("(?:" + trigger_words + ")\\s*(?:id|[#=])?\\s*([0-9]{4,6})",
         flags=re.IGNORECASE)
-bzurlre = re.compile("(?:http|https)://\S+/show_bug.cgi\?id=([0-9]{4,6})",
+plurals = re.compile("(?:" + trigger_words + ")s\\s*(?:id|[#=])?\\s*([0-9]{4,6})",
         flags=re.IGNORECASE)
-# what about "Bug" "PR", multiple ids, and urls?
+idnumbers = re.compile("(?:id|[#=])\\s*([0-9]{4,6})", flags=re.IGNORECASE)
+numbers = re.compile("([0-9]{4,6})", flags=re.IGNORECASE)
+bugzillaURLs = re.compile("(?:http|https)://\S+/show_bug.cgi\?id=([0-9]{4,6})")
 
-def detect(commit):
+def detect(msg):
     ids = set()
-    ids.update(detect_message(commit.message))
-    # filter by time?
+
+    r = plurals.findall(msg)
+    if r:
+        # handle lists a bit differently
+        lines = msg.split('\n')
+        for line in lines:
+            r = plurals.findall(line)
+            if r:
+                nr = numbers.findall(line)
+                if nr:
+                    ids.update(nr)
+
+    r = bugids.findall(msg)
+    if r:
+        ids.update(r)
+
+    r = bugzillaURLs.findall(msg)
+    if r:
+        ids.update(r)
+
+    if len(ids) == 0:
+        r = idnumbers.findall(msg)
+        if r:
+            ids.update(r)
+
     return tuple(ids)
-
-def detect_message(msg):
-    returning = list()
-
-    r = bugre.findall(msg)
-    if r:
-        returning.extend(r)
-
-    r = bzurlre.findall(msg)
-    if r:
-        returning.extend(r)
-
-    return returning
 
 
 def get_links(project_url):
@@ -56,7 +69,7 @@ def get_links(project_url):
             , commit_id = commit.id
             , date = commit.commit_time # + commit.commit_time_zone ?
             , message = commit.message
-            , bug_ids = detect(commit)
+            , bug_ids = detect(commit.message)
             )
 
         yield trace
