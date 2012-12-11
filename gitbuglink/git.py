@@ -57,7 +57,6 @@ def detect(msg):
 
 
 def get_links(project_url):
-    count = 0
     repo = dulwich.repo.Repo(project_url)
 
     for walk_entry in repo.get_walker():
@@ -74,22 +73,70 @@ def get_links(project_url):
 
         yield trace
 
+
+def process_humans(l, h, project_url):
+    repo = dulwich.repo.Repo(project_url)
+
+    for line in h:
+        items = line.strip().split(',')
+        commit = repo[items[0]]
+        items = items[1:]
+        confirmed_ids = list()
+
+        print(">> Processing commit:", commit.id)
+        print(commit.message)
+
+        print("---------------------------------------------------")
+        print(">> Which are the valid ids?", items)
+        while True and len(items) > 0:
+            for index, item in enumerate(items):
+                print("%d) %s" %(index, item))
+            print("q) None of these")
+
+            response = raw_input("? ")
+            if response == 'q':
+                break
+            i = int(response)
+
+            print("Adding (%d) %s to links file." % (i, items[i]))
+            confirmed_ids.append(items[i])
+            items.remove(items[i])
+
+        if len(confirmed_ids) > 0:
+            l.write(commit.id + "," + ",".join(confirmed_ids) + "\n")
+
+
 def main(argv):
     # Configure option parser
     optparser = OptionParser(usage='%prog [options] PATH', version='0.1')
     optparser.set_defaults(links_file='links.csv')
     optparser.set_defaults(humans_file='humans.csv')
+    optparser.set_defaults(processing=False)
     optparser.add_option('-l', '--links_file', dest='links_file',
             help='Output file for links')
     optparser.add_option('-m', '--humans_file', dest='humans_file',
             help='Output file for human links')
+    optparser.add_option('-p', '--process', dest='process',
+            help='Process the humans file, appending results to the links file.', action='store_true')
     (options, args) = optparser.parse_args(argv)
 
-    print(args)
     if len(args) > 1:
         repo = args[1]
     else:
         repo = "."
+
+    if options.process:
+        # for each in humans_file,
+        #   display commit
+        #   display list of detected ids
+        #   input corrected list
+        #   append result to links_file
+
+        with open(options.links_file, 'a') as l:
+            with open(options.humans_file, 'r') as h:
+                process_humans(l, h, repo)
+
+        return
 
     if os.path.exists(repo):
         with open(options.links_file, 'w') as l:
