@@ -64,13 +64,13 @@ def get_links(project_url):
         commit = walk_entry.commit
 
         trace = TraceInfo(
-            author = commit.author
-            , committer = commit.committer
-            , commit_id = commit.id
-            , date = commit.commit_time # + commit.commit_time_zone ?
-            , message = commit.message
-            , bug_ids = detect(commit.message)
-            )
+                author = commit.author
+                , committer = commit.committer
+                , commit_id = commit.id
+                , date = commit.commit_time # + commit.commit_time_zone ?
+                , message = commit.message
+                , bug_ids = detect(commit.message)
+                )
 
         yield trace
 
