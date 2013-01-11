@@ -16,8 +16,8 @@ git-svn-id: https://svn.apache.org/repos/asf/tomcat/trunk@1397868 13f79535-47bb-
 """
 
         bugs = list(gitbuglink.git.detect(msg))
-        assert '53993' in bugs
-        assert len(bugs) == 1
+        self.assertIn('53993', bugs)
+        self.assertEquals(len(bugs), 1)
 
     def test_both_url_and_bug_id(self):
         # from Tomcat commit 80a7aff3e20045f428b33727a5277e62da6ba4d2
@@ -28,9 +28,9 @@ configured.
 git-svn-id: https://svn.apache.org/repos/asf/tomcat/trunk@1208046 13f79535-47bb-0310-9956-ffa450edef68
 """
         bugs = list(gitbuglink.git.detect(msg))
-        assert '52259' in bugs
-        assert '46264' in bugs
-        assert len(bugs) == 2
+        self.assertIn('52259', bugs)
+        self.assertIn('46264', bugs)
+        self.assertEquals(len(bugs), 2)
 
 
     def test_br_id(self):
@@ -48,8 +48,8 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1373326 13f79535-47b
 """
 
         bugs = list(gitbuglink.git.detect(msg))
-        assert '53550' in bugs
-        assert len(bugs) == 1
+        self.assertIn('53550', bugs)
+        self.assertEquals(len(bugs), 1)
 
     def test_hash_id(self):
         # Ant commit 33ad81017516e020cc87f2210e57d088c6ea7b44
@@ -59,8 +59,8 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1373326 13f79535-47b
     git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1367741 13f79535-47bb-0310-9956-ffa450edef68
 """
         bugs = list(gitbuglink.git.detect(msg))
-        assert '53622' in bugs
-        assert len(bugs) == 1
+        self.assertIn('53622', bugs)
+        self.assertEquals(len(bugs), 1)
 
         # Ant commit 7fec30d23e50361e31ca5852b0abb5fa96dc281f
         msg = """Stronger tests in preparation for #53622.
@@ -69,8 +69,8 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1367736 13f79535-47b
 """
 
         bugs = list(gitbuglink.git.detect(msg))
-        assert '53622' in bugs
-        assert len(bugs) == 1
+        self.assertIn('53622', bugs)
+        self.assertEquals(len(bugs), 1)
 
     def test_bug_upcase_id(self):
         # Ant commit 328a7da150274f0a7497dc777800e7492548c304
@@ -80,8 +80,8 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1343304 13f79535-47b
 """
 
         bugs = list(gitbuglink.git.detect(msg))
-        assert '51792' in bugs
-        assert len(bugs) == 1
+        self.assertIn('51792', bugs)
+        self.assertEquals(len(bugs), 1)
 
     def test_comma_separated_id(self):
         # 99 problems but a git ain't one HIT ME
@@ -96,9 +96,9 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@932588 13f79535-47bb
 """
 
         bugs = list(gitbuglink.git.detect(msg))
-        assert '49079' in bugs
-        assert '48961' in bugs
-        assert len(bugs) == 2
+        self.assertIn('49079', bugs)
+        self.assertIn('48961', bugs)
+        self.assertEquals(len(bugs), 2)
 
 
     def test_bugzilla_id(self):
@@ -108,8 +108,8 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@932588 13f79535-47bb
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@924533 13f79535-47bb-0310-9956-ffa450edef68
 """
         bugs = list(gitbuglink.git.detect(msg))
-        assert '48932' in bugs
-        assert len(bugs) == 1
+        self.assertIn('48932', bugs)
+        self.assertEquals(len(bugs), 1)
 
     def test_issue_id(self):
         # Antcommit 9269a4d0633eeb71d2abacbecd8307b2366a3a21
@@ -119,8 +119,8 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@720481 13f79535-47bb
 """
 
         bugs = list(gitbuglink.git.detect(msg))
-        assert '32461' in bugs
-        assert len(bugs) == 1
+        self.assertIn('32461', bugs)
+        self.assertEquals(len(bugs), 1)
 
     def test_bz_id(self):
         # Ant commit 4a6f513f85c5b2d4646fcf699c381e0b68084620
@@ -129,7 +129,7 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@720481 13f79535-47bb
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@631430 13f79535-47bb-0310-9956-ffa450edef68
 """
         bugs = list(gitbuglink.git.detect(msg))
-        assert '44493' in bugs
-        assert len(bugs) == 1
+        self.assertIn('44493', bugs)
+        self.assertEquals(len(bugs), 1)
 
 
