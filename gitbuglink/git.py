@@ -17,7 +17,7 @@ from optparse import OptionParser, SUPPRESS_HELP
 import dulwich
 
 TraceInfo = namedtuple('traceinfo', 'commit_id author committer date message bug_ids')
-trigger_words = "bug|fix|pr|br|bz|bugzilla|issue|problem"
+trigger_words = "bug|fix|fixing|pr|br|bz|bugzilla|issue|problem"
 bugids = re.compile("(?:" + trigger_words + ")\\s*(?:id|[#=])?\\s*([0-9]{4,6})",
         flags=re.IGNORECASE)
 plurals = re.compile("(?:" + trigger_words + ")s\\s*(?:id|[#=])?\\s*([0-9]{4,6})",
