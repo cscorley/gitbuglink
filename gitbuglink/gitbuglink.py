@@ -13,14 +13,14 @@ import dulwich.repo
 import click
 
 TraceInfo = namedtuple('traceinfo', 'commit_id author committer date message bug_ids')
-trigger_words = "bug|fix|fixing|pr|br|bz|bugzilla|issue|problem"
-bugids = re.compile("(?:" + trigger_words + ")\\s*(?:id|[#=])?\\s*([0-9]{4,6})",
+trigger_words = "issue|problem|bug|fix|fixing|fixes|close|closes|pr|br|bz|bugzilla"
+bugids = re.compile("(?:" + trigger_words + ")\\s*(?:id|[#=])?\\s*([0-9]+)",
         flags=re.IGNORECASE)
-plurals = re.compile("(?:" + trigger_words + ")s\\s*(?:id|[#=])?\\s*([0-9]{4,6})",
+plurals = re.compile("(?:" + trigger_words + ")s\\s*(?:id|[#=])?\\s*([0-9]+)",
         flags=re.IGNORECASE)
-idnumbers = re.compile("(?:id|[#=])\\s*([0-9]{4,6})", flags=re.IGNORECASE)
-numbers = re.compile("([0-9]{4,6})", flags=re.IGNORECASE)
-bugzillaURLs = re.compile("(?:http|https)://\S+/show_bug.cgi\?id=([0-9]{4,6})")
+idnumbers = re.compile("(?:id|[#=])\\s*([0-9]+)", flags=re.IGNORECASE)
+numbers = re.compile("([0-9]+)", flags=re.IGNORECASE)
+bugzillaURLs = re.compile("(?:http|https)://\S+/show_bug.cgi\?id=([0-9]+)")
 
 def detect(msg):
     ids = set()
