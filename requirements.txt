@@ -1,3 +1,2 @@
 dulwich
-nose
 click

@@ -69,7 +69,7 @@ def get_links(repo):
         yield trace
 
 
-def process_humans(links, humans, repo):
+def process_files(links, humans, repo):
     # for each in humans_file,
     #   display commit
     #   display list of detected ids
@@ -106,13 +106,18 @@ def process_humans(links, humans, repo):
 
 
 @click.command()
-@click.option('--process', is_flag=True)
+@click.option('--process', is_flag=True,
+              help="Manually process the humans file")
+@click.option('--verify', is_flag=True,
+              help="Manually verify the links file")
 @click.option('--links_file', default='links.csv',
               help='Output file for links')
 @click.option('--humans_file', default='humans.csv',
               help='Output file for links humans need to check')
+@click.option('--verified_file', default='verified.csv',
+              help='Output file for links that have been manually verified')
 @click.argument('git_path', type=click.Path(exists=True))
-def main(process, links_file, humans_file, git_path):
+def main(process, verify, verified_file, links_file, humans_file, git_path):
     repo = dulwich.repo.Repo(git_path)
 
     if process:
@@ -120,7 +125,13 @@ def main(process, links_file, humans_file, git_path):
             links = csv.writer(l)
             with open(humans_file, 'r') as h:
                 humans = csv.reader(h)
-                process_humans(links, humans, repo)
+                process_files(links, humans, repo)
+    elif verify:
+        with open(verified_file, 'a') as v:
+            verified = csv.writer(v)
+            with open(links_file, 'r') as l:
+                links = csv.reader(l)
+                process_files(verified, links, repo)
     else:
         with open(links_file, 'w') as l:
             links = csv.writer(l)
