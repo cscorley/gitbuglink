@@ -76,12 +76,12 @@ def process_humans(l, h, repo):
     #   input corrected list
     #   append result to links_file
 
-    for line in h:
-        items = line.strip().split(',')
-        commit = repo[items[0]]
-        items = items[1:]
+    for row in h:
+        commit = repo[row[0]]
+        items = row[1:]
         confirmed_ids = list()
 
+        print()
         print(">> Processing commit:", commit.id)
         print(commit.message)
 
@@ -102,7 +102,7 @@ def process_humans(l, h, repo):
             items.remove(items[i])
 
         if len(confirmed_ids) > 0:
-            l.write(commit.id + "," + ",".join(confirmed_ids) + "\n")
+            links.writerow([commit.id] + confirmed_ids)
 
 
 @click.command()
@@ -117,8 +117,10 @@ def main(process, links_file, humans_file, git_path):
 
     if process:
         with open(links_file, 'a') as l:
+            links = csv.writer(l)
             with open(humans_file, 'r') as h:
-                process_humans(l, h, repo)
+                humans = csv.reader(h)
+                process_humans(links, humans, repo)
     else:
         with open(links_file, 'w') as l:
             links = csv.writer(l)
