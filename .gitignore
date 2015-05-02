@@ -1,3 +1,5 @@
+*.csv
+
 # virtualenv
 env/
 env2/
