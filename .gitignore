@@ -1,5 +1,9 @@
 # virtualenv
 env/
+env2/
+env3/
+
+.ropeproject/
 
 *.py[co]
 

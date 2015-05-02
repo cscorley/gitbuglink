@@ -1,20 +1,16 @@
-#!/usr/bin/env python2
-#
-# [The "New BSD" license]
-# Copyright (c) 2012 The Board of Trustees of The University of Alabama
-# All rights reserved.
-#
-# See LICENSE for details.
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from __future__ import (print_function, with_statement)
 
 import re
 import sys
 import os
+import csv
 from collections import namedtuple
-from optparse import OptionParser, SUPPRESS_HELP
 
-import dulwich
+import dulwich.repo
+import click
 
 TraceInfo = namedtuple('traceinfo', 'commit_id author committer date message bug_ids')
 trigger_words = "bug|fix|fixing|pr|br|bz|bugzilla|issue|problem"
@@ -56,8 +52,7 @@ def detect(msg):
     return tuple(ids)
 
 
-def get_links(project_url):
-    repo = dulwich.repo.Repo(project_url)
+def get_links(repo):
 
     for walk_entry in repo.get_walker():
         commit = walk_entry.commit
@@ -74,8 +69,12 @@ def get_links(project_url):
         yield trace
 
 
-def process_humans(l, h, project_url):
-    repo = dulwich.repo.Repo(project_url)
+def process_humans(l, h, repo):
+    # for each in humans_file,
+    #   display commit
+    #   display list of detected ids
+    #   input corrected list
+    #   append result to links_file
 
     for line in h:
         items = line.strip().split(',')
@@ -106,49 +105,27 @@ def process_humans(l, h, project_url):
             l.write(commit.id + "," + ",".join(confirmed_ids) + "\n")
 
 
-def main(argv):
-    # Configure option parser
-    optparser = OptionParser(usage='%prog [options] PATH', version='0.1')
-    optparser.set_defaults(links_file='links.csv')
-    optparser.set_defaults(humans_file='humans.csv')
-    optparser.set_defaults(processing=False)
-    optparser.add_option('-l', '--links_file', dest='links_file',
-            help='Output file for links')
-    optparser.add_option('-m', '--humans_file', dest='humans_file',
-            help='Output file for human links')
-    optparser.add_option('-p', '--process', dest='process',
-            help='Process the humans file, appending results to the links file.', action='store_true')
-    (options, args) = optparser.parse_args(argv)
+@click.command()
+@click.option('--process', is_flag=True)
+@click.option('--links_file', default='links.csv',
+              help='Output file for links')
+@click.option('--humans_file', default='humans.csv',
+              help='Output file for links humans need to check')
+@click.argument('git_path', type=click.Path(exists=True))
+def main(process, links_file, humans_file, git_path):
+    repo = dulwich.repo.Repo(git_path)
 
-    if len(args) > 1:
-        repo = args[1]
-    else:
-        repo = "."
-
-    if options.process:
-        # for each in humans_file,
-        #   display commit
-        #   display list of detected ids
-        #   input corrected list
-        #   append result to links_file
-
-        with open(options.links_file, 'a') as l:
-            with open(options.humans_file, 'r') as h:
+    if process:
+        with open(links_file, 'a') as l:
+            with open(humans_file, 'r') as h:
                 process_humans(l, h, repo)
-
-        return
-
-    if os.path.exists(repo):
-        with open(options.links_file, 'w') as l:
-            with open(options.humans_file, 'w') as h:
+    else:
+        with open(links_file, 'w') as l:
+            links = csv.writer(l)
+            with open(humans_file, 'w') as h:
+                humans = csv.writer(h)
                 for each in get_links(repo):
                     if len(each.bug_ids) > 1:
-                        h.write(each.commit_id + "," + ",".join(each.bug_ids) + "\n")
+                        humans.writerow((each.commit_id,) + each.bug_ids)
                     elif len(each.bug_ids) == 1:
-                        l.write(each.commit_id + "," + each.bug_ids[0] + "\n")
-
-    else:
-        print("Path does not exist: ", repo)
-
-if __name__ == '__main__':
-    main(sys.argv)
+                        links.writerow([each.commit_id, each.bug_ids[0]])

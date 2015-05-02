@@ -1,11 +1,23 @@
-all: compile test
+all: test
 
-compile:
-	echo "Nothing to do here."
+clean:
+	find gitbuglink tests -name '*.pyc' -exec rm {} \;
 
 test:
-	nosetests tests
+	. env2/bin/activate && nosetests || true
+	. env3/bin/activate && nosetests || true
 
-init:
-	test -d env || virtualenv env --python=python2
-	. env/bin/activate; pip install -r requirements.txt --use-mirrors
+init: init2 init3
+
+init2:
+	virtualenv --python=python2 env2
+	. env2/bin/activate && pip install nose
+	. env2/bin/activate && pip install --editable .
+
+init3:
+	virtualenv --python=python3 env3
+	. env3/bin/activate && pip install nose
+	. env3/bin/activate && pip install --editable .
+
+publish:
+	python setup.py sdist bdist_wheel upload

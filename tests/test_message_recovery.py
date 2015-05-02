@@ -1,7 +1,4 @@
-
-from context import (
-        gitbuglink
-        )
+from gitbuglink import gitbuglink
 
 import unittest
 
@@ -15,7 +12,7 @@ Avoid NPE when the session is invalidated
 git-svn-id: https://svn.apache.org/repos/asf/tomcat/trunk@1397868 13f79535-47bb-0310-9956-ffa450edef68
 """
 
-        bugs = list(gitbuglink.git.detect(msg))
+        bugs = list(gitbuglink.detect(msg))
         self.assertIn('53993', bugs)
         self.assertEquals(len(bugs), 1)
 
@@ -27,7 +24,7 @@ configured.
 
 git-svn-id: https://svn.apache.org/repos/asf/tomcat/trunk@1208046 13f79535-47bb-0310-9956-ffa450edef68
 """
-        bugs = list(gitbuglink.git.detect(msg))
+        bugs = list(gitbuglink.detect(msg))
         self.assertIn('52259', bugs)
         self.assertIn('46264', bugs)
         self.assertEquals(len(bugs), 2)
@@ -47,7 +44,7 @@ Still some work to do: there might be intermediate file in the import stack whic
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1373326 13f79535-47bb-0310-9956-ffa450edef68
 """
 
-        bugs = list(gitbuglink.git.detect(msg))
+        bugs = list(gitbuglink.detect(msg))
         self.assertIn('53550', bugs)
         self.assertEquals(len(bugs), 1)
 
@@ -58,7 +55,7 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1373326 13f79535-47b
 
     git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1367741 13f79535-47bb-0310-9956-ffa450edef68
 """
-        bugs = list(gitbuglink.git.detect(msg))
+        bugs = list(gitbuglink.detect(msg))
         self.assertIn('53622', bugs)
         self.assertEquals(len(bugs), 1)
 
@@ -68,7 +65,7 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1373326 13f79535-47b
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1367736 13f79535-47bb-0310-9956-ffa450edef68
 """
 
-        bugs = list(gitbuglink.git.detect(msg))
+        bugs = list(gitbuglink.detect(msg))
         self.assertIn('53622', bugs)
         self.assertEquals(len(bugs), 1)
 
@@ -79,7 +76,7 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1367736 13f79535-47b
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@1343304 13f79535-47bb-0310-9956-ffa450edef68
 """
 
-        bugs = list(gitbuglink.git.detect(msg))
+        bugs = list(gitbuglink.detect(msg))
         self.assertIn('51792', bugs)
         self.assertEquals(len(bugs), 1)
 
@@ -95,7 +92,7 @@ Address indexOf inefficiency in PropertyHelper default propertyexpander implemen
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@932588 13f79535-47bb-0310-9956-ffa450edef68
 """
 
-        bugs = list(gitbuglink.git.detect(msg))
+        bugs = list(gitbuglink.detect(msg))
         self.assertIn('49079', bugs)
         self.assertIn('48961', bugs)
         self.assertEquals(len(bugs), 2)
@@ -107,7 +104,7 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@932588 13f79535-47bb
 
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@924533 13f79535-47bb-0310-9956-ffa450edef68
 """
-        bugs = list(gitbuglink.git.detect(msg))
+        bugs = list(gitbuglink.detect(msg))
         self.assertIn('48932', bugs)
         self.assertEquals(len(bugs), 1)
 
@@ -118,7 +115,7 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@924533 13f79535-47bb
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@720481 13f79535-47bb-0310-9956-ffa450edef68
 """
 
-        bugs = list(gitbuglink.git.detect(msg))
+        bugs = list(gitbuglink.detect(msg))
         self.assertIn('32461', bugs)
         self.assertEquals(len(bugs), 1)
 
@@ -128,7 +125,7 @@ git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@720481 13f79535-47bb
 
 git-svn-id: https://svn.apache.org/repos/asf/ant/core/trunk@631430 13f79535-47bb-0310-9956-ffa450edef68
 """
-        bugs = list(gitbuglink.git.detect(msg))
+        bugs = list(gitbuglink.detect(msg))
         self.assertIn('44493', bugs)
         self.assertEquals(len(bugs), 1)
 
