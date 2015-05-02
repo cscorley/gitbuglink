@@ -69,14 +69,14 @@ def get_links(repo):
         yield trace
 
 
-def process_humans(l, h, repo):
+def process_humans(links, humans, repo):
     # for each in humans_file,
     #   display commit
     #   display list of detected ids
     #   input corrected list
     #   append result to links_file
 
-    for row in h:
+    for row in humans:
         commit = repo[row[0]]
         items = row[1:]
         confirmed_ids = list()
